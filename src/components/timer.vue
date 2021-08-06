@@ -2,8 +2,8 @@
   <div class="timer-block">
     <div class="date">
       <div class="day-time">
-        <span class="subtitle">2020-08-04</span>
-        <span>15:00</span>
+        <span class="subtitle">{{ showDate() }}</span>
+        <span>{{ showTime(date) }}</span>
       </div>
       <div class="task-num">
         <span class="subtitle">DONE/TODO</span>
@@ -35,6 +35,40 @@
 <script>
 export default {
   name: "timer",
+  data() {
+    return {
+      currentTime: 0,
+      date:new Date(),
+    };
+  },
+  methods: {
+    showDate() {
+      let today = new Date();
+      return today.toLocaleDateString();
+    },
+    showTime() {
+      let Now = new Date();
+      var hours = this.padDate(Now.getHours());
+      var minutes = this.padDate(Now.getMinutes());
+    //   var seconds = this.padDate(Now.getSeconds()); //for test only
+
+      return hours + ":" + minutes;
+    },
+    padDate(input) {
+      return input.toString().padStart(2, "0");
+    },
+  },
+  mounted() {
+    var _this = this; //宣告一個變數指向Vue例項this，保證作用域一致
+    this.timer = setInterval(function () {
+      _this.date = new Date(); //修改資料date
+    }, 1000);
+  },
+  onBeforeUnmount() {
+    if (this.timer) {
+      clearInterval(this.timer); //在Vue例項銷燬前，清除我們的定時器
+    }
+  },
 };
 </script>
 
@@ -96,7 +130,7 @@ export default {
     line-height: 3rem;
     width: 18vw;
     justify-content: space-between;
-    li{
+    li {
       transition: all 0.2s;
     }
     li:hover {
