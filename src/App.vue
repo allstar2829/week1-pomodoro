@@ -1,5 +1,5 @@
 <template>
-  <router-view/>
+  <router-view />
 </template>
 
 <style lang="scss">
@@ -9,5 +9,8 @@
   font-family: Avenir, Helvetica, Arial, sans-serif;
   display: flex;
   color: white;
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: hidden;
 }
 </style>
