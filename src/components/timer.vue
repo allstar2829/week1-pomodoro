@@ -50,9 +50,9 @@ export default {
       let Now = new Date();
       var hours = this.padDate(Now.getHours());
       var minutes = this.padDate(Now.getMinutes());
-    //   var seconds = this.padDate(Now.getSeconds()); //for test only
+      var seconds = this.padDate(Now.getSeconds()); //for test only
 
-      return hours + ":" + minutes;
+      return hours + ":" + minutes+ ":" + seconds;
     },
     padDate(input) {
       return input.toString().padStart(2, "0");
@@ -60,13 +60,13 @@ export default {
   },
   mounted() {
     var _this = this; //宣告一個變數指向Vue例項this，保證作用域一致
-    this.timer = setInterval(function () {
+    this.updateCurrentTime = setInterval(function () {
       _this.date = new Date(); //修改資料date
     }, 1000);
   },
   onBeforeUnmount() {
-    if (this.timer) {
-      clearInterval(this.timer); //在Vue例項銷燬前，清除我們的定時器
+    if (this.updateCurrentTime) {
+      clearInterval(this.updateCurrentTime); //在Vue例項銷燬前，清除我們的定時器
     }
   },
 };
