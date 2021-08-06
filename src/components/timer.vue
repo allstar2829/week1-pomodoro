@@ -3,7 +3,7 @@
     <div class="date">
       <div class="day-time">
         <span class="subtitle">{{ showDate() }}</span>
-        <span>{{ showTime(date) }}</span>
+        <span>{{ showTime(currentTime) }}</span>
       </div>
       <div class="task-num">
         <span class="subtitle">DONE/TODO</span>
@@ -37,8 +37,7 @@ export default {
   name: "timer",
   data() {
     return {
-      currentTime: 0,
-      date:new Date(),
+      currentTime:new Date(),
     };
   },
   methods: {
@@ -61,7 +60,7 @@ export default {
   mounted() {
     var _this = this; //宣告一個變數指向Vue例項this，保證作用域一致
     this.updateCurrentTime = setInterval(function () {
-      _this.date = new Date(); //修改資料date
+      _this.currentTime = new Date(); //修改資料date
     }, 1000);
   },
   onBeforeUnmount() {
