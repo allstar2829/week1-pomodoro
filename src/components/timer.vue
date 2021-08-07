@@ -25,7 +25,7 @@
     <div class="btn-menu">
       <ul>
         <li><i class="fas fa-times"></i></li>
-        <li><i class="fas fa-play"></i></li>
+        <li @click="startCounter()"><i class="fas fa-play"></i></li>
         <li><i class="fas fa-redo"></i></li>
       </ul>
     </div>
@@ -49,13 +49,15 @@ export default {
       let Now = new Date();
       var hours = this.padDate(Now.getHours());
       var minutes = this.padDate(Now.getMinutes());
-      var seconds = this.padDate(Now.getSeconds()); //for test only
-
-      return hours + ":" + minutes+ ":" + seconds;
+      // var seconds = this.padDate(Now.getSeconds()); //for test only
+      return hours + ":" + minutes;
     },
     padDate(input) {
       return input.toString().padStart(2, "0");
     },
+    startCounter(){
+      console.log('test')
+    }
   },
   mounted() {
     var _this = this; //宣告一個變數指向Vue例項this，保證作用域一致
@@ -156,6 +158,15 @@ export default {
       border-radius: 50%;
       line-height: 75px;
       padding-left: 5px;
+      box-sizing: border-box;
+    }
+    .fa-pause {
+      width: 85px;
+      height: 85px;
+      font-size: 3rem;
+      border: 5px solid white;
+      border-radius: 50%;
+      line-height: 75px;
       box-sizing: border-box;
     }
   }
