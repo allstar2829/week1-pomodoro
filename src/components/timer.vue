@@ -17,16 +17,24 @@
             <span>- Start Work -</span>
           </div>
           <div class="counter">
-            <span>25:00</span>
+            <vue-countdown
+              v-if="counting"
+              :time="25 * 60 * 1000"
+              v-slot="{ minutes, seconds }"
+            >
+              {{ padDate(minutes) }}:{{ padDate(seconds) }}
+            </vue-countdown>
+            <span v-else>25:00</span>
           </div>
         </div>
       </div>
     </div>
     <div class="btn-menu">
       <ul>
-        <li><i class="fas fa-times"></i></li>
-        <li @click="startCounter()"><i class="fas fa-play"></i></li>
-        <li><i class="fas fa-redo"></i></li>
+        <li @click="countdownRedo()"><i class="fas fa-redo"></i></li>
+        <li v-if="counting" @click="pauseToPlay()"><i class="fas fa-pause"></i></li>
+        <li v-else @click="startCountdown()"><i class="fas fa-play"></i></li>
+        <li @click="startCountdown()"><i class="fas fa-check"></i></li>
       </ul>
     </div>
   </div>
@@ -37,7 +45,8 @@ export default {
   name: "timer",
   data() {
     return {
-      currentTime:new Date(),
+      currentTime: new Date(),
+      counting: false,
     };
   },
   methods: {
@@ -50,13 +59,20 @@ export default {
       var hours = this.padDate(Now.getHours());
       var minutes = this.padDate(Now.getMinutes());
       // var seconds = this.padDate(Now.getSeconds()); //for test only
+      // return hours + ":" + minutes+ ":" + seconds;  //for test only
       return hours + ":" + minutes;
     },
     padDate(input) {
       return input.toString().padStart(2, "0");
     },
-    startCounter(){
-      console.log('test')
+    startCountdown() {
+      this.counting = true;
+    },
+    countdownRedo() {
+      this.counting = false;
+    },
+    pauseToPlay(){
+      this.counting = false;
     }
   },
   mounted() {
@@ -137,7 +153,7 @@ export default {
     li:hover {
       transform: scale(1.1);
     }
-    .fa-times,
+    .fa-check,
     .fa-redo {
       border: 5px solid white;
       border-radius: 50%;
@@ -147,7 +163,7 @@ export default {
       font-size: 2rem;
       margin-top: -15px;
     }
-    .fa-times {
+    .fa-check {
       font-size: 2.5rem;
     }
     .fa-play {
