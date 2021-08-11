@@ -18,13 +18,15 @@
           </div>
           <div class="counter">
             <vue-countdown
-              v-if="counting"
+              ref="childCountdown"
+              :auto-start="false"
+              @progress="test(data)"
               :time="25 * 60 * 1000"
               v-slot="{ minutes, seconds }"
             >
               {{ padDate(minutes) }}:{{ padDate(seconds) }}
             </vue-countdown>
-            <span v-else>25:00</span>
+            <!-- <span>25:00</span> -->
           </div>
         </div>
       </div>
@@ -66,13 +68,19 @@ export default {
       return input.toString().padStart(2, "0");
     },
     startCountdown() {
+      this.$refs.childCountdown.start()
       this.counting = true;
     },
     countdownRedo() {
       this.counting = false;
     },
     pauseToPlay(){
+      this.$refs.childCountdown.end()
       this.counting = false;
+      console.log('aaa')
+    },
+    test(data){
+      console.log(data)
     }
   },
   mounted() {
@@ -145,7 +153,7 @@ export default {
     display: flex;
     text-align: center;
     line-height: 3rem;
-    width: 18vw;
+    min-width: 18vw;
     justify-content: space-between;
     li {
       transition: all 0.2s;
