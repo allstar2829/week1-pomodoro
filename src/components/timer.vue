@@ -17,7 +17,7 @@
             <span>- Start Work -</span>
           </div>
           <div class="counter">
-            <vue-countdown
+            <!-- <vue-countdown
               ref="childCountdown"
               :auto-start="false"
               @progress="test(data)"
@@ -25,8 +25,9 @@
               v-slot="{ minutes, seconds }"
             >
               {{ padDate(minutes) }}:{{ padDate(seconds) }}
-            </vue-countdown>
+            </vue-countdown> -->
             <!-- <span>25:00</span> -->
+            <span class="text-center" id="count-down-timer">{{ element }}</span>
           </div>
         </div>
       </div>
@@ -34,8 +35,10 @@
     <div class="btn-menu">
       <ul>
         <li @click="countdownRedo()"><i class="fas fa-redo"></i></li>
-        <li v-if="counting" @click="pauseToPlay()"><i class="fas fa-pause"></i></li>
-        <li v-else @click="startCountdown()"><i class="fas fa-play"></i></li>
+        <li v-if="counting" @click="pauseToPlay()">
+          <i class="fas fa-pause"></i>
+        </li>
+        <li v-else @click="startCountDown()"><i class="fas fa-play"></i></li>
         <li @click="startCountdown()"><i class="fas fa-check"></i></li>
       </ul>
     </div>
@@ -49,6 +52,7 @@ export default {
     return {
       currentTime: new Date(),
       counting: false,
+      element: "",
     };
   },
   methods: {
@@ -67,31 +71,51 @@ export default {
     padDate(input) {
       return input.toString().padStart(2, "0");
     },
-    startCountdown() {
-      this.$refs.childCountdown.start()
-      this.counting = true;
+    startCountDown(duration) {
+      console.log(duration);
+      let secondsRemaining = duration;
+      let min = 0;
+      let sec = 0;
+
+      let countInterval = setInterval(function () {
+        min = parseInt(secondsRemaining / 60);
+        sec = parseInt(secondsRemaining % 60);
+
+        this.element = min + ":" + sec;
+        console.log(this.element);
+
+        secondsRemaining = secondsRemaining - 1;
+        if (secondsRemaining < 0) {
+          clearInterval(countInterval);
+        }
+      }, 1000);
     },
-    countdownRedo() {
-      this.counting = false;
-    },
-    pauseToPlay(){
-      this.$refs.childCountdown.end()
-      this.counting = false;
-      console.log('aaa')
-    },
-    test(data){
-      console.log(data)
-    }
   },
   mounted() {
+    // 左上時間顯示
     var _this = this; //宣告一個變數指向Vue例項this，保證作用域一致
     this.updateCurrentTime = setInterval(function () {
       _this.currentTime = new Date(); //修改資料date
     }, 1000);
+
+    // 中間計時器
+    let time_minutes = 1; // Value in minutes
+    let time_seconds = 30; // Value in seconds
+
+    let duration = time_minutes * 60 + time_seconds;
+
+    this.element = time_minutes + ":" + time_seconds;
+    console.log(this.element);
+
+    this.startCountDown(duration);
   },
   onBeforeUnmount() {
     if (this.updateCurrentTime) {
       clearInterval(this.updateCurrentTime); //在Vue例項銷燬前，清除我們的定時器
+    }
+
+    if (this.element) {
+      clearInterval(this.element); 
     }
   },
 };
